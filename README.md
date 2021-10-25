@@ -1,5 +1,5 @@
 # unofficial-Zelda_example
-
+Designed for mobile you can change it for desktop.
 
 
 This is just an example.

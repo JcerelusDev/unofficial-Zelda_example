@@ -6,4 +6,4 @@ That method can't build a complete game.
 If you want to build a complete game use my library
 which is canvasgameJs .
 
-The repo name is canva00.
+The repo name is canvas00.

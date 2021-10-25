@@ -7,16 +7,10 @@ return document.querySelector(x)
 l = console.log;
 
 
-playSon =function(){
-son = new Audio()
-son.src="zelda.aac"
-
-}
 
 // velocity x and y
 vx = 32
 vy = 32
-
 
 
 var cv =  f("canvas")
@@ -36,13 +30,6 @@ this.col =col
 
 
 }
-
-//this allows me to enter and leave house
-var doors = []
-
-
-
-
 
 
 
@@ -74,8 +61,7 @@ var layer =[
 ]
 
 
-
-
+//images initialization
 var tree = new Image()
 var flame = new Image();
 var grass = new Image();
@@ -84,26 +70,32 @@ var house = new Image();
 var fence = new Image();
 var mur = new Image();
 var carpet = new Image();
-var plim = new Image();
-plim.src="allsprite.png"
-
-plim.onload =  playSon()
+var playerImg = new Image();
+playerImg.src="allsprite.png"
 
 
 
+//spritesheet info 
 var flameFW =64 , flameFH = 64 , flamecol = 0 , flamerow = 0 ;
 
 var player = new Sprite(32,100,32,32)
-var door = new Sprite(500,56,20,20,"transparent")
-doors.push(door)
 
 player.fw = 51; player.fh = 71; 
  player.col = 2; player.row = 6
 
 
+//this allows me to enter and leave house
+var doors = []
+
+
+var door = new Sprite(500,56,20,20,"transparent")
+doors.push(door)
+
 
  var url ="level1.json"
 function loadMap(){
+
+
 
 grass.src="grass03.png"
 home.src="house.png"
@@ -128,17 +120,14 @@ player.x = oldX
 
 if(player.y + player.h >= mapH +2  || player.y <= 0){
 player.y = oldY
-
 }
 
 }
 
-
-
-
 }
 
 
+//  drawMap starts here
 
 function drawMap(){
 // detect which area before drawing
@@ -155,21 +144,13 @@ if(world[col][row] == 1){
 c.drawImage(fence,row*ts,col*ts,ts,ts)
 }
 
-
 }
 
-
-
-
-
 }
-
-
 
 } // end of level1
 
 var tile // represents any single tile from the map
-
 // level2
 if(area =="Room"){
 for(var col = 0; col < world.length; col++){
@@ -192,14 +173,11 @@ c.drawImage(carpet,row*ts,col*ts,ts,ts)
 
 if(tile == 6){
 c.drawImage(mur,row*ts,col*ts,ts,ts)
-
-
 }
 
 if(tile == 0){
 c.fillStyle = "darkred"
 c.fillRect(row*ts,col*ts,ts,ts)
-
 }
 
 
@@ -223,11 +201,10 @@ c.drawImage(flame,flamecol*flameFW,flamerow*flameFH,64,64,215,330,32,24)
 
 }
 
-
-
 } // end of level2
 
 
+//draw the houses of the village
 if(area == "Village")
 for(var co = 0; co < layer.length; co++){
 for(var ro = 0; ro < layer[co].length; ro++){
@@ -238,8 +215,6 @@ c.shadowColor = "black";
  c.shadowOffsetWidth = 5; 
  c.shadowOffsetHeight = 5; 
 c.drawImage(home,ro*ts,co*ts,100,50)
-
-
 }
 
 if(layer[co][ro] == 3){
@@ -247,16 +222,11 @@ c.drawImage(house,ro*ts,co*ts,100,50)
 
 }
 
-
-
-
 }
 
 }
 
-
-
-}
+}  // end of drawMap
 
 
 // that method below attaches to the doors and switches  map 
@@ -273,9 +243,7 @@ path = "level1.json"
 player.x = 488
 player.y = 107
 
-
 }
-
 
 changeL() // that method is in levelLoaders.js file
 
@@ -301,17 +269,11 @@ return true
 
 }
 
-
-
-
-
-}
-
-
 }
 
 }
 
+}
 
 }  //end of village
 
@@ -340,7 +302,7 @@ return true
 }
 
 
-}
+} //end of room
 
 
 }
@@ -367,7 +329,7 @@ c.shadowColor = "red";
  c.shadowOffsetX = 0;
  c.shadowOffsetWidth = 0; 
 
-c.drawImage(plim,player.col*player.fw,player.row*player.fh,player.fw,player.fh,player.x,player.y,player.w,player.h)
+c.drawImage(playerImg,player.col*player.fw,player.row*player.fh,player.fw,player.fh,player.x,player.y,player.w,player.h)
 
 }
 
@@ -422,6 +384,7 @@ let upB = false
 
 rightPress.ontouchstart = function(){
 rightB = true
+
 }
 
 rightPress.ontouchend = function(){
@@ -610,5 +573,4 @@ player.col = 0
 
 bord()
 }
-
 

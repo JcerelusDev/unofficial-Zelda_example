@@ -7,3 +7,6 @@ If you want to build a complete game use my library
 which is canvasgameJs .
 
 The repo name is canvas00.
+Or the link is :
+
+https://github.com/JcerelusDev/canvas00

@@ -364,10 +364,6 @@ upB = false
 
 
 
-
-
-
-
 var then = performance.now()
 var now
 
@@ -413,12 +409,6 @@ up()
 }
 
 
-
-
-
-
-
-
 for(dor of doors){
 if(isCollide(player,dor)){
 swichy()
@@ -433,10 +423,7 @@ swichy()
 oldX = player.x // tracking player X position
 oldY = player.y // tracking player Y position
 
-
 c.restore()
-
-
 
 }
 
@@ -470,7 +457,7 @@ player.y+player.h >= tileY &&
 player.y <= tileY+30 && tile !=0){
 player.x = oldX
 player.y = oldY
-l()
+
 }
 
 
@@ -499,7 +486,6 @@ player.y = oldY
 }
 
 } //end of room
-
 
 
 }

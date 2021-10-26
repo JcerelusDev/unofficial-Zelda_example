@@ -9,8 +9,8 @@ l = console.log;
 
 
 // velocity x and y
-vx = 32
-vy = 32
+vx = 10
+vy = 10
 
 
 var cv =  f("canvas")
@@ -78,7 +78,7 @@ playerImg.src="allsprite.png"
 //spritesheet info 
 var flameFW =64 , flameFH = 64 , flamecol = 0 , flamerow = 0 ;
 
-var player = new Sprite(32,100,32,32)
+var player = new Sprite(40,100,32,32)
 
 player.fw = 51; player.fh = 71; 
  player.col = 2; player.row = 6
@@ -92,10 +92,11 @@ var door = new Sprite(500,56,20,20,"transparent")
 doors.push(door)
 
 
+
+//fetch json map
  var url ="level1.json"
+
 function loadMap(){
-
-
 
 grass.src="grass03.png"
 home.src="house.png"
@@ -111,22 +112,6 @@ init() // init is in levelLoader.js
 }
 
 
-// collision between player and the world
-function bord(){
-if(area =="Village"){
-if(player.x + player.w >=mapW -10 || player.x <= 0){
-player.x = oldX 
-}
-
-if(player.y + player.h >= mapH +2  || player.y <= 0){
-player.y = oldY
-}
-
-}
-
-}
-
-
 //  drawMap starts here
 
 function drawMap(){
@@ -136,6 +121,10 @@ if(area =="Village"){
 
 for(var col = 0; col < world.length; col++){
 for(var row = 0; row < world[col].length; row++){
+tileX = row*32; 
+tileY = col*32
+
+
 if(world[col][row] == 0){
 c.drawImage(grass,row*ts,col*ts,ts,ts)
 }
@@ -143,6 +132,15 @@ c.drawImage(grass,row*ts,col*ts,ts,ts)
 if(world[col][row] == 1){
 c.drawImage(fence,row*ts,col*ts,ts,ts)
 }
+
+if(world[col][row] == 1){
+//tilecollider test
+c.strokeStyle ="transparent"
+c.strokeRect(tileX,tileY,32,32)
+
+}
+
+
 
 }
 
@@ -205,7 +203,7 @@ c.drawImage(flame,flamecol*flameFW,flamerow*flameFH,64,64,215,330,32,24)
 
 
 //draw the houses of the village
-if(area == "Village")
+if(area == "Village"){
 for(var co = 0; co < layer.length; co++){
 for(var ro = 0; ro < layer[co].length; ro++){
 if(layer[co][ro] == 7){
@@ -222,8 +220,10 @@ c.drawImage(house,ro*ts,co*ts,100,50)
 
 }
 
+
 }
 
+}
 }
 
 }  // end of drawMap
@@ -246,69 +246,10 @@ player.y = 107
 }
 
 changeL() // that method is in levelLoaders.js file
-
 }
 
 
-
-
-
-function block(x,y,Map){
-if(area =="Village"){
-
-for(var a = 0; a < layer.length; a++){
-for(var b = 0; b < layer[a].length; b++){
-if(layer[a][b] != 0){
-if(x <= b*32 + 96 &&
-x+ 16 >= b*32 -10 &&
-y +10  <= a*32 + 32 &&
-y + 20.5  >= a*32 -0.6
-){
-
-return true
-
-}
-
-}
-
-}
-
-}
-
-}  //end of village
-
-
-
-if(area =="Room"){
-
-for(var c = 0; c < world.length; c++){
-for(var d = 0; d < world[c].length; d++){
-if(world[c][d] == 6   ){
-
-if(x <= d*32 + 12 && 
-x -12 >= d*32 &&
-y+ 8 <= c*32 + 22 &&
-y +32 >= c*32 + 12){
-return true
-}
-
-
-
-}
-
-
-}
-
-}
-
-
-} //end of room
-
-
-}
-
-
-
+ 
 
 function drawLevel(){
 c.fillStyle ="red"
@@ -330,6 +271,7 @@ c.shadowColor = "red";
  c.shadowOffsetWidth = 0; 
 
 c.drawImage(playerImg,player.col*player.fw,player.row*player.fh,player.fw,player.fh,player.x,player.y,player.w,player.h)
+
 
 }
 
@@ -472,6 +414,11 @@ up()
 
 
 
+
+
+
+
+
 for(dor of doors){
 if(isCollide(player,dor)){
 swichy()
@@ -489,6 +436,8 @@ oldY = player.y // tracking player Y position
 
 c.restore()
 
+
+
 }
 
 
@@ -497,8 +446,63 @@ loop()
 
 
 
+// collision between player , the game world  and the houses
+function tileCollision(){
+if(area =="Village"){
+for(var col = 0; col < world.length; col++){
+for(var row = 0; row < world[col].length; row++){
+tileX = row*32; 
+tileY = col*32
+tile = world[col][row]
+if(player.x+player.w >=tileX &&
+player.x <= tileX+24 &&
+player.y+player.h >= tileY &&
+player.y <= tileY+24 && tile == 1){
+player.x = oldX
+player.y = oldY
+
+}
+
+tile = layer[col][row]
+if(player.x+player.w >=tileX &&
+player.x <= tileX+100 &&
+player.y+player.h >= tileY &&
+player.y <= tileY+30 && tile !=0){
+player.x = oldX
+player.y = oldY
+l()
+}
 
 
+
+}
+}
+
+} //end of village
+
+
+if(area =="Room"){
+for(var col = 0; col < world.length; col++){
+for(var row = 0; row < world[col].length; row++){
+tileX = row*32; 
+tileY = col*32
+tile = world[col][row]
+if(player.x+player.w >=tileX &&
+player.x <= tileX+32 &&
+player.y+player.h >= tileY &&
+player.y <= tileY+32 && tile == 6){
+player.x = oldX
+player.y = oldY
+
+}
+}
+}
+
+} //end of room
+
+
+
+}
 
 
 
@@ -507,7 +511,7 @@ loop()
 function left(){
 //check for collision between player and the game world
 
-if(!block(player.x -vx,player.y,world))
+
 player.x-= vx
 player.row = 5
 
@@ -518,14 +522,12 @@ player.col = 0
 }
 
 
-bord()
-
-
+tileCollision()
 
 }
 
 function right(){
-if(!block(player.x +vx,player.y,world))
+
 player.x+= vx
 
 player.row = 6
@@ -537,11 +539,10 @@ player.col = 0
 }
 
 
-bord()
+tileCollision()
 }
 
 function up(){
-if(!block(player.x,player.y - vy,world))
 player.y-= vy
 
 player.row = 7
@@ -552,14 +553,12 @@ if(player.col >= 3){
 player.col = 0
 }
 
-bord()
 
-
-
+tileCollision()
 }
 
 function down(){
-if(!block(player.x,player.y + vy,world))
+
 player.y+= vy
 
 player.row = 4
@@ -571,6 +570,6 @@ player.col = 0
 }
 
 
-bord()
+tileCollision()
 }
 
